@@ -8,9 +8,9 @@ const router = express.Router();
 
 const User = require("../../models/User");
 
-// @route   /api/auth
+// @route   GET /api/auth
 // @desc    handle users
-// @access public
+// @access private
 
 router.get("/", auth, async (req, res) => {
   try {
@@ -22,11 +22,15 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// @route   POST /api/auth
+// @desc    register users
+// @access  public
+
 router.post(
   "/",
   [
     body("email", "Enter a valid Email address").isEmail(),
-    body("password", "You must enter a password to").exists(),
+    body("password", "You must enter a password").exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);

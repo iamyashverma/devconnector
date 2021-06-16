@@ -1,4 +1,6 @@
 {
   "mongoURI": "mongodb+srv://yashvdev:yashvdev@cluster0.nowff.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  "jwtSecret": "mysecret"
+  "jwtSecret": "mysecret",
+  "githubClientId": " 75e900144ff0beea0ef6",
+  "githubClientSecret": "81f43072ee59823ea3bedb338d30d8e0fc3becf0"
 }
