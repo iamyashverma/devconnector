@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export const Login = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -52,3 +53,5 @@ export const Login = () => {
     </Fragment>
   );
 };
+
+export default connect()(Login);
