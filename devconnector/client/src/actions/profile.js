@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { PROFILE_ERROR, GET_PROFILE, UPDATE_PROFILE } from './types';
 import { setAlert } from './alert';
+import { logout } from './auth';
 
 export const getCurrentProfile = () => async (dispatch) => {
   try {
@@ -117,4 +118,48 @@ export const addEducation = (formData, history) => async (dispatch) => {
   }
 };
 
-export const deleteProfile = () => async (dispatch) => {};
+export const deleteProfile = () => async (dispatch) => {
+  try {
+    await axios.delete('/api/profile');
+    dispatch(logout());
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+    });
+    dispatch(setAlert('Error Deleting Profile. Try Again!', 'danger'));
+  }
+};
+
+export const deleteEducation = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/profile/education/${id}`);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data,
+    });
+
+    dispatch(setAlert('Education Field Deleted ', 'danger'));
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+    });
+    dispatch(setAlert('Error Deleting Education Field. Try Again!', 'danger'));
+  }
+};
+
+export const deleteExperience = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/profile/experience/${id}`);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data,
+    });
+
+    dispatch(setAlert('Experience Field Deleted ', 'danger'));
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+    });
+    dispatch(setAlert('Error Deleting Experience Field. Try Again!', 'danger'));
+  }
+};

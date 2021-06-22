@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
-import { getCurrentProfile } from '../../actions/profile';
+import { getCurrentProfile, deleteProfile } from '../../actions/profile';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
@@ -12,6 +12,7 @@ const Dashboard = ({
   auth: { user },
   profile: { loading, profile },
   getCurrentProfile,
+  deleteProfile,
 }) => {
   useEffect(() => {
     getCurrentProfile();
@@ -39,12 +40,19 @@ const Dashboard = ({
           </Link>
         </Fragment>
       )}
+      <div className='my-2'>
+        <button className='btn btn-danger' onClick={() => deleteProfile()}>
+          <i className='fas fa-user-minus'></i>
+          Delete My Account
+        </button>
+      </div>
     </Fragment>
   );
 };
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
+  deleteProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
 };
@@ -54,4 +62,6 @@ const mapStateToProps = (state) => ({
   profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile, deleteProfile })(
+  Dashboard
+);
