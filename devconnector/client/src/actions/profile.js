@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { PROFILE_ERROR, GET_PROFILE, UPDATE_PROFILE } from './types';
+import {
+  PROFILE_ERROR,
+  GET_PROFILE,
+  UPDATE_PROFILE,
+  GET_PROFILES,
+  CLEAR_PROFILE,
+  GET_REPOS,
+} from './types';
 import { setAlert } from './alert';
 import { logout } from './auth';
 
@@ -161,5 +168,51 @@ export const deleteExperience = (id) => async (dispatch) => {
       type: PROFILE_ERROR,
     });
     dispatch(setAlert('Error Deleting Experience Field. Try Again!', 'danger'));
+  }
+};
+
+export const getProfiles = () => async (dispatch) => {
+  try {
+    const res = await axios.get('/api/profile');
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data,
+    });
+    dispatch({ type: CLEAR_PROFILE });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+export const getProfileByID = (userId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/profile/user/${userId}`);
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+export const getGithubRepos = (username) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/profile/github/${username}`);
+    dispatch({
+      type: GET_REPOS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
   }
 };
