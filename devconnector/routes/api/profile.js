@@ -305,25 +305,26 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
   }
 });
 
-// @route   Delete /api/profile/github/:username
+// @route   get /api/profile/github/:username
 // @desc    get github repos
 // @access private
 
-router.get('/github/:username', auth, async (req, res) => {
+router.get('/github/:username', async (req, res) => {
   try {
     const options = {
-      uri: `https://api.github.com/users/${
-        req.params.username
-      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
-        'githubClientId'
-      )}&client_secret=${config.get('githubClientSecret')}`,
-      headers: { 'user-agent': 'node.js' },
+      uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`,
+      headers: {
+        'user-agent': 'node.js',
+        Authorization: `token ${config.get('githubToken')}`,
+      },
     };
 
     request(options, (error, response, body) => {
       if (error) throw error;
 
-      if (response.statusCode !== 200) return res.send('Profile not found');
+      if (response.statusCode !== 200) {
+        return res.json([]);
+      }
 
       res.json(JSON.parse(body));
     });
